@@ -1,6 +1,7 @@
 package org.btorres.junit5.examples.model;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Account {
 
@@ -26,5 +27,23 @@ public class Account {
 
   public void setBalance(BigDecimal balance) {
     this.balance = balance;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    // same object
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Account)) {
+      return false;
+    }
+    Account account = (Account) o;
+    return getName().equals(account.getName()) && getBalance().equals(account.getBalance());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getName(), getBalance());
   }
 }
