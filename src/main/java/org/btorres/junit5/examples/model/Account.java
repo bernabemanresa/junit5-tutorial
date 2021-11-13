@@ -3,6 +3,8 @@ package org.btorres.junit5.examples.model;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import org.btorres.junit5.examples.exceptions.NonEnoughMoneyException;
+
 public class Account {
 
   private String name;
@@ -30,7 +32,11 @@ public class Account {
   }
 
   public void debit(BigDecimal amount) {
-    this.balance = balance.subtract(amount);
+   BigDecimal newBalance =  balance.subtract(amount);
+   if (newBalance.compareTo(BigDecimal.ZERO) < 0){
+     throw new NonEnoughMoneyException("No enough money");
+   }
+   this.balance = newBalance;
   }
 
   public void credit(BigDecimal amount) {

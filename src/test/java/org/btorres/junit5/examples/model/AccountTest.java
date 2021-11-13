@@ -2,11 +2,13 @@ package org.btorres.junit5.examples.model;
 
 import java.math.BigDecimal;
 
+import org.btorres.junit5.examples.exceptions.NonEnoughMoneyException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AccountTest {
 
@@ -62,11 +64,16 @@ class AccountTest {
     assertNotNull(account.getBalance());
     assertEquals(1100,account.getBalance().intValue());
     assertEquals("1100.12345",account.getBalance().toPlainString());
-
   }
 
+  @Test
+  void nonEnoughMoneyException() {
+    Account account = new Account("Bernabé", new BigDecimal("1000.12345"));
+    final BigDecimal amountToDebit = new BigDecimal("1001.12345");
+    Exception ex = assertThrows(NonEnoughMoneyException.class, ()->{
+      account.debit(amountToDebit);
+    });
 
-
-
-
+    assertEquals("No enough money" , ex.getMessage());
+  }
 }
